@@ -39,8 +39,8 @@ export default Ember.Component.extend({
       return true;}
   }),
   showLetters: Ember.computed('guessedLetters.[]', function(){
-var wordLetters = this.get('wordLetters');
-var guessedLetters = this.get('guessedLetters');
+	var wordLetters = this.get('wordLetters');
+	var guessedLetters = this.get('guessedLetters');
     var m =[];
     for (var i =0;i<wordLetters.length;i++){
       m.push("_");
