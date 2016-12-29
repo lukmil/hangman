@@ -1,0 +1,29 @@
+{{#if isGameWon}}
+<h1>Žaidimas Laimėtas!!!! </h1>
+<button {{action 'newGame'}} class="btn btn-primary">New Game</button> <br>
+-------------------------------------------------------
+{{else if isGameOver }}
+<h1>Žaidimas pralaimėtas </h1>
+<h2>Atsakymas: {{word}} </h2>
+ <button {{action 'newGame'}} class="btn btn-primary">New Game</button>
+-------------------------------------------------------
+{{else}}
+<h1>Žaidimas vyksta</h1>
+-------------------------------------------------------
+<form>
+  <div class="form-group">
+    <label><h1>Įveskite Raidę</h1></label>
+    {{input type="text" class="form-control" value=letter maxlength=1}}
+  </div>
+  <button {{action 'addLetter'}} class="btn btn-primary">
+    Tikrinti</button>
+</form>
+{{/if}}<br>
+<h1>Spėjamas žodis</h1>
+<h2>{{#each showLetters as |a|}} {{a}} {{/each}} ({{wordLength}})</h2>
+<div id="stage">
+  <img src="{{showPictures}}" alt="Stage">
+</div>
+<h3>Spėtos raidės: {{totalGuesses}} </h3>
+<h4>Spėta kartų: {{totalGuessesLength}} </h4>
+<h4>Atspėtų raidžių kiekis: {{countCorrectGuesses}} </h4>
