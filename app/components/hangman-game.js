@@ -20,7 +20,7 @@ export default Ember.Component.extend({
     for(var i =0; i<differentLettersInWord.length; i++){
       for(var j =0; j<guessedLetters.length;j++) {
         if (differentLettersInWord[i] === guessedLetters[j]) {
-        total+= 1;
+          total+= 1;
         }
       }
     }
@@ -39,8 +39,8 @@ export default Ember.Component.extend({
       return true;}
   }),
   showLetters: Ember.computed('guessedLetters.[]', function(){
-	var wordLetters = this.get('wordLetters');
-	var guessedLetters = this.get('guessedLetters');
+    var wordLetters = this.get('wordLetters');
+    var guessedLetters = this.get('guessedLetters');
     var m =[];
     for (var i =0;i<wordLetters.length;i++){
       m.push("_");
@@ -57,25 +57,12 @@ export default Ember.Component.extend({
   showPictures: Ember.computed('totalGuesses', function(){
     var guessTotal = this.get('totalGuessesLength');
     var correctTotal = this.get('countCorrectGuesses');
+    var page = "http://lukmil.stud.if.ktu.lt/hangman/stage";
     var falseGuesses = guessTotal - correctTotal;
-    if ( falseGuesses === 0 ){
-      return "http://lukmil.stud.if.ktu.lt/hangman/stage1.png"; }
-    else if (falseGuesses === 1) {
-      return "http://lukmil.stud.if.ktu.lt/hangman/stage2.png"; }
-    else if (falseGuesses === 2) {
-      return "http://lukmil.stud.if.ktu.lt/hangman/stage3.png"; }
-    else if (falseGuesses === 3) {
-      return "http://lukmil.stud.if.ktu.lt/hangman/stage4.png"; }
-    else if (falseGuesses === 4) {
-      return "http://lukmil.stud.if.ktu.lt/hangman/stage5.png"; }
-    else if (falseGuesses === 5) {
-      return "http://lukmil.stud.if.ktu.lt/hangman/stage6.png"; }
-    else if (falseGuesses === 6) {
-      return "http://lukmil.stud.if.ktu.lt/hangman/stage7.png"; }
-    else if (falseGuesses === 7) {
-      return "http://lukmil.stud.if.ktu.lt/hangman/stage8.png"; }
-    else {
-      return "http://lukmil.stud.if.ktu.lt/hangman/stage9.png"; }
+    for (var i =0; i<7; i++ ){
+      if ( falseGuesses === i ){
+        return page + (i+1) +".png" ;
+      }}
   }),
   actions: {
     addLetter: function(){
@@ -83,8 +70,8 @@ export default Ember.Component.extend({
       this.get('guessedLetters').addObject(letter);
     },
     newGame: function(){
-       this.set('guessedLetters', []);
-       this.set('word', "labas");
+      this.set('guessedLetters', []);
+      this.set('word', "labas");
     }
-}
+  }
 });
