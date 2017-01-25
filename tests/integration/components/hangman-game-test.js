@@ -1,25 +1,76 @@
-import { moduleForComponent, test } from 'ember-qunit';
+import {moduleForComponent, test} from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-
+import game from '../../pages/hangman';
 moduleForComponent('hangman-game', 'Integration | Component | hangman game', {
-  integration: true
+  integration: true,
+  beforeEach() {
+    game.setContext(this);
+  },
+  afterEach(){
+    game.removeContext();
+  }
+});
+test('game starts', function (assert) {
+  this.render(hbs`{{hangman-game}}`);
+  assert.equal(game.gameStartText, "Žaidimas vyksta");
+  assert.ok(game.fillLetterField, "has input field");
+  assert.ok(game.buttonCheck, "has button 'tikrinti'");
+});
+test('Check if guess submit input works', function (assert) {
+  this.render(hbs`{{hangman-game}}`);
+  //a - is a guessed Letter
+  game.makeGuess("a");
+  assert.equal(game.guessedLetters, "Spėtos raidės: a");
+  assert.equal(game.guessesCount, "Spėta kartų: 1");
 });
 
-test('it renders', function(assert) {
-
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
-
+test('Check if given word is the testing word', function (assert) {
+  this.set('givenWord', "abc");
+  this.render(hbs`{{hangman-game word=givenWord}}`);
+  assert.equal(this.givenWord, "abc");
+});
+test('Check if letter input field is not empty', function (assert) {
   this.render(hbs`{{hangman-game}}`);
+  game.makeGuess("");
+  assert.equal(game.noValueGuessLetterFieldInput, "Empty Value");
+});
 
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:
-  this.render(hbs`
-    {{#hangman-game}}
-      template block text
-    {{/hangman-game}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+test('Check if there is wrong letter', function (assert) {
+  this.set('givenWord', "abc");
+  this.render(hbs`{{hangman-game word=givenWord}}`);
+  game.makeGuess("d");
+  assert.equal(game.isCorrectLetter, "_ _ _ (3)");
+});
+test('Check if there is correct letter', function (assert) {
+  this.set('givenWord', "abc");
+  this.render(hbs`{{hangman-game word=givenWord}}`);
+  game.makeGuess("a");
+  assert.equal(game.isCorrectLetter, "a _ _ (3)");
+});
+test('Check if there is Game Win ', function (assert) {
+  this.set('givenWord', "abc");
+  this.render(hbs`{{hangman-game word=givenWord}}`);
+  game.makeGuess("a");
+  assert.equal(game.isCorrectLetter, "a _ _ (3)");
+  game.makeGuess("b");
+  assert.equal(game.isCorrectLetter, "a b _ (3)");
+  game.makeGuess("c");
+  assert.equal(game.isCorrectLetter, "a b c (3)");
+  assert.equal(game.isGameWonNotification, "Žaidimas Laimėtas!!!!");
+});
+test('Check if there is Game Over', function (assert) {
+  this.set('givenWord', "abc");
+  this.render(hbs`{{hangman-game word=givenWord}}`);
+  game.makeGuess("q");
+  game.makeGuess("w");
+  game.makeGuess("r");
+  game.makeGuess("t");
+  game.makeGuess("y");
+  game.makeGuess("u");
+  game.makeGuess("o");
+  game.makeGuess("p");
+  assert.equal(game.isGameOverNotification, "Žaidimas pralaimėtas");
+  assert.ok(game.isbuttonNewGameVisible, "Matomas buttonas New Game");
+  game.buttonNewGame();
+  assert.equal(game.gameStartText, "Žaidimas vyksta");
 });

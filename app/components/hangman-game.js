@@ -2,10 +2,15 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   word: 'zodelis',
+  showEmptyValue: false,
   uniqueWordLetters : Ember.computed.uniq('wordLetters'),
   wordLength: Ember.computed('word', function(){
     return this.get('word').length; }),
   guessedLetters: Ember.A(),
+  init: function() {
+    this._super(...arguments);
+    this.set('guessedLetters', Ember.A())
+  },
   wordLetters: Ember.computed('word', function() {
     return this.get('word').split('');
   }),
@@ -64,6 +69,7 @@ export default Ember.Component.extend({
         return page + (i+1) +".png" ;
       }}
   }),
+
   actions: {
     addLetter: function(){
       var letter = this.get('letter');
