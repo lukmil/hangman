@@ -9,7 +9,7 @@ export default Ember.Component.extend({
   guessedLetters: Ember.A(),
   init: function() {
     this._super(...arguments);
-    this.set('guessedLetters', Ember.A())
+    this.set('guessedLetters', Ember.A());
   },
   wordLetters: Ember.computed('word', function() {
     return this.get('word').split('');
@@ -52,8 +52,8 @@ export default Ember.Component.extend({
     }
     for( i=0;i<wordLetters.length; i++){
       for(var j=0; j<guessedLetters.length;j++){
-        if (wordLetters[i] === guessedLetters[j]){
-          m[i] = guessedLetters[j];
+        if (wordLetters[i].toUpperCase() === guessedLetters[j].toUpperCase()){
+          m[i] = guessedLetters[j].toUpperCase();
         }
       }
     }

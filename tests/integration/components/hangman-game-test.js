@@ -14,7 +14,7 @@ test('game starts', function (assert) {
   this.render(hbs`{{hangman-game}}`);
   assert.equal(game.gameStartText, "Žaidimas vyksta");
   assert.ok(game.fillLetterField, "has input field");
-  assert.ok(game.buttonCheck, "has button 'tikrinti'");
+  assert.ok(game.isButtonCheck, "has button 'tikrinti'");
 });
 test('Check if guess submit input works', function (assert) {
   this.render(hbs`{{hangman-game}}`);
@@ -24,11 +24,6 @@ test('Check if guess submit input works', function (assert) {
   assert.equal(game.guessesCount, "Spėta kartų: 1");
 });
 
-test('Check if given word is the testing word', function (assert) {
-  this.set('givenWord', "abc");
-  this.render(hbs`{{hangman-game word=givenWord}}`);
-  assert.equal(this.givenWord, "abc");
-});
 test('Check if letter input field is not empty', function (assert) {
   this.render(hbs`{{hangman-game}}`);
   game.makeGuess("");
@@ -36,26 +31,33 @@ test('Check if letter input field is not empty', function (assert) {
 });
 
 test('Check if there is wrong letter', function (assert) {
-  this.set('givenWord', "abc");
-  this.render(hbs`{{hangman-game word=givenWord}}`);
+  this.render(hbs`{{hangman-game word="abc"}}`);
   game.makeGuess("d");
   assert.equal(game.isCorrectLetter, "_ _ _ (3)");
 });
+
+test('Check if uppercase is given', function (assert) {
+  this.render(hbs`{{hangman-game word="Abc"}}`);
+  game.makeGuess("A");
+  assert.equal(game.isCorrectLetter, "A _ _ (3)");
+});
+
+
 test('Check if there is correct letter', function (assert) {
   this.set('givenWord', "abc");
   this.render(hbs`{{hangman-game word=givenWord}}`);
   game.makeGuess("a");
-  assert.equal(game.isCorrectLetter, "a _ _ (3)");
+  assert.equal(game.isCorrectLetter, "A _ _ (3)");
 });
 test('Check if there is Game Win ', function (assert) {
   this.set('givenWord', "abc");
   this.render(hbs`{{hangman-game word=givenWord}}`);
   game.makeGuess("a");
-  assert.equal(game.isCorrectLetter, "a _ _ (3)");
+  assert.equal(game.isCorrectLetter, "A _ _ (3)");
   game.makeGuess("b");
-  assert.equal(game.isCorrectLetter, "a b _ (3)");
+  assert.equal(game.isCorrectLetter, "A B _ (3)");
   game.makeGuess("c");
-  assert.equal(game.isCorrectLetter, "a b c (3)");
+  assert.equal(game.isCorrectLetter, "A B C (3)");
   assert.equal(game.isGameWonNotification, "Žaidimas Laimėtas!!!!");
 });
 test('Check if there is Game Over', function (assert) {
