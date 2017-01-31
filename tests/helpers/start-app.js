@@ -2,6 +2,10 @@ import Ember from 'ember';
 import Application from '../../app';
 import config from '../../config/environment';
 
+Ember.TextField.reopen({
+  attributeBindings: ['data-test-id']
+});
+
 export default function startApp(attrs) {
   let application;
 

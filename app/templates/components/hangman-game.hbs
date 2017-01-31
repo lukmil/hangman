@@ -1,30 +1,40 @@
 {{#if isGameWon}}
-<h1>Žaidimas Laimėtas!!!! </h1>
-<button {{action 'newGame'}} class="btn btn-primary">New Game</button> <br>
--------------------------------------------------------
+  <h1 data-test-id="game-won-notification">Žaidimas Laimėtas!!!! </h1>
+  <button {{action 'newGame'}} class="btn btn-primary">New Game</button> <br>
+  -------------------------------------------------------
 {{else if isGameOver }}
-<h1>Žaidimas pralaimėtas </h1>
-<h2>Atsakymas: {{word}} </h2>
- <button {{action 'newGame'}} class="btn btn-primary">New Game</button>
--------------------------------------------------------
-{{else}}
-<h1>Žaidimas vyksta</h1>
--------------------------------------------------------
-<form>
-  <div class="form-group">
-    <label><h1>Įveskite Raidę</h1></label>
-    {{input type="text" class="form-control" value=letter maxlength=1}}
-  </div>
-    <h1 class="emptyValue">Empty Value</h1>
-  <button {{action 'addLetter'}} class="btn btn-primary">
-    Tikrinti</button>
-</form>
-{{/if}}<br>
-<h1>Spėjamas žodis</h1>
-<h2>{{#each showLetters as |a|}} {{a}} {{/each}} ({{wordLength}})</h2>
-<div id="stage">
-  <img src="{{showPictures}}" alt="Stage">
-</div>
-<h3>Spėtos raidės: {{totalGuesses}} </h3>
-<h4>Spėta kartų: {{totalGuessesLength}} </h4>
-<h4>Atspėtų raidžių kiekis: {{countCorrectGuesses}} </h4>
+  <h1 data-test-id="game-lost-notification">Žaidimas pralaimėtas </h1>
+  <h2>Atsakymas: {{word}} </h2>
+  <button data-test-id="new-game-button" {{action 'newGame'}} class="btn btn-primary">New Game</button>
+
+  -------------------------------------------------------
+{{/if}}
+  <button data-test-id="difficulty-button" {{ action 'selectDifficultyLevel'}} class="btn btn-primary">Pasirinkite sunkumo lygį</button><br>
+  {{#if isShowingDifficultyLevel}}
+    <button data-test-id="easier-words" {{action 'toggleDifficultyLevel' 1}}  > Lengvesni žodžiai</button>
+    <button data-test-id="harder-words" {{action 'toggleDifficultyLevel' 2}} > Sunkesni žodžiai</button>
+  {{/if}}
+ {{#if isGameOn }}
+   <h1 data-test-id="game-start-notification">Žaidimas vyksta</h1>
+   -------------------------------------------------------
+   <form>
+     <div class="form-group">
+       <label><h1>Įveskite Raidę</h1></label>
+       {{input type="text" data-test-id="fill-letter-input" class="form-control"  value=letter maxlength=1}}
+     </div>
+     <h1 data-test-id="no-value-notification" class="emptyValue">Empty Value</h1>
+     <button data-test-id="button-check" {{action 'addLetter'}} class="btn btn-primary">
+       Tikrinti
+     </button>
+   </form>
+   <br>
+   <h1>Spėjamas žodis</h1>
+   <h2 data-test-id="correct-letters">{{#each showLetters as |a|}} {{a}} {{/each}} ({{wordLength}})</h2>
+   <div id="stage">
+     <img src="{{showPictures}}" alt="Stage">
+   </div>
+   <h3 data-test-id="guessed-letters">Spėtos raidės: {{totalGuesses}} </h3>
+   <h4 data-test-id="guesses-count">Spėta kartų: {{totalGuessesLength}} </h4>
+   <h4 data-test-id="guesses-correct-count">Atspėtų raidžių kiekis: {{countCorrectGuesses}} </h4>
+
+ {{/if}}

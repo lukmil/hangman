@@ -2,6 +2,8 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   word: 'zodelis',
+  isShowingDifficultyLevel: false,
+  isGameOn: false,
   showEmptyValue: false,
   uniqueWordLetters : Ember.computed.uniq('wordLetters'),
   wordLength: Ember.computed('word', function(){
@@ -78,6 +80,14 @@ export default Ember.Component.extend({
     newGame: function(){
       this.set('guessedLetters', []);
       this.set('word', "labas");
-    }
+    },
+    selectDifficultyLevel: function(){
+      this.set('isShowingDifficultyLevel', true);
+    },
+    toggleDifficultyLevel(level){
+      this.set('isGameOn', true);
+      this.set('isShowingDifficultyLevel', false);
+      this.attrs.chosenLevel(level);
+     }
   }
 });
