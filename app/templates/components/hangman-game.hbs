@@ -9,11 +9,7 @@
 
   -------------------------------------------------------
 {{/if}}
-  <button data-test-id="difficulty-button" {{ action 'selectDifficultyLevel'}} class="btn btn-primary">Pasirinkite sunkumo lygį</button><br>
-  {{#if isShowingDifficultyLevel}}
-    <button data-test-id="easier-words" {{action 'toggleDifficultyLevel' 1}}  > Lengvesni žodžiai</button>
-    <button data-test-id="harder-words" {{action 'toggleDifficultyLevel' 2}} > Sunkesni žodžiai</button>
-  {{/if}}
+
  {{#if isGameOn }}
    <h1 data-test-id="game-start-notification">Žaidimas vyksta</h1>
    -------------------------------------------------------

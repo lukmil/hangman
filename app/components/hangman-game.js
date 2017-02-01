@@ -2,92 +2,92 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   word: 'zodelis',
-  isShowingDifficultyLevel: false,
-  isGameOn: false,
+  isGameOn: true,
   showEmptyValue: false,
-  uniqueWordLetters : Ember.computed.uniq('wordLetters'),
-  wordLength: Ember.computed('word', function(){
-    return this.get('word').length; }),
+  uniqueWordLetters: Ember.computed.uniq('wordLetters'),
+  wordLength: Ember.computed('word', function () {
+    return this.get('word').length;
+  }),
   guessedLetters: Ember.A(),
-  init: function() {
+  init: function () {
     this._super(...arguments);
     this.set('guessedLetters', Ember.A());
   },
-  wordLetters: Ember.computed('word', function() {
+
+  wordLetters: Ember.computed('word', function () {
     return this.get('word').split('');
   }),
-  totalGuesses: Ember.computed('guessedLetters.[]', function() {
-    return this.get('guessedLetters');  }),
-  totalGuessesLength: Ember.computed('guessedLetters.[]', function(){
-    return this.get('guessedLetters').length;  }),
-  countCorrectGuesses: Ember.computed('totalGuesses',function(){
+  totalGuesses: Ember.computed('guessedLetters.[]', function () {
+    return this.get('guessedLetters');
+  }),
+  totalGuessesLength: Ember.computed('guessedLetters.[]', function () {
+    return this.get('guessedLetters').length;
+  }),
+  countCorrectGuesses: Ember.computed('totalGuesses', function () {
     var differentLettersInWord = this.get('uniqueWordLetters');
     var guessedLetters = this.get('guessedLetters');
     var total = 0;
-    for(var i =0; i<differentLettersInWord.length; i++){
-      for(var j =0; j<guessedLetters.length;j++) {
+    for (var i = 0; i < differentLettersInWord.length; i++) {
+      for (var j = 0; j < guessedLetters.length; j++) {
         if (differentLettersInWord[i] === guessedLetters[j]) {
-          total+= 1;
+          total += 1;
         }
       }
     }
     return total;
   }),
-  isGameWon: Ember.computed('totalGuesses',function(){
+  isGameWon: Ember.computed('totalGuesses', function () {
     var differentLettersInWord = this.get('uniqueWordLetters');
     var sumCorrectGuesses = this.get('countCorrectGuesses');
-    if(differentLettersInWord.length === sumCorrectGuesses){
-      return true;}
+    if (differentLettersInWord.length === sumCorrectGuesses) {
+      return true;
+    }
   }),
-  isGameOver: Ember.computed('totalGuesses',function(){
+  isGameOver: Ember.computed('totalGuesses', function () {
     var totalGuessesLength = this.get('totalGuessesLength');
     var sumCorrectGuesses = this.get('countCorrectGuesses');
-    if(8 === totalGuessesLength-sumCorrectGuesses){
-      return true;}
+    if (8 === totalGuessesLength - sumCorrectGuesses) {
+      return true;
+    }
   }),
-  showLetters: Ember.computed('guessedLetters.[]', function(){
+  showLetters: Ember.computed('guessedLetters.[]', function () {
     var wordLetters = this.get('wordLetters');
     var guessedLetters = this.get('guessedLetters');
-    var m =[];
-    for (var i =0;i<wordLetters.length;i++){
+    var m = [];
+    for (var i = 0; i < wordLetters.length; i++) {
       m.push("_");
     }
-    for( i=0;i<wordLetters.length; i++){
-      for(var j=0; j<guessedLetters.length;j++){
-        if (wordLetters[i].toUpperCase() === guessedLetters[j].toUpperCase()){
+    for (i = 0; i < wordLetters.length; i++) {
+      for (var j = 0; j < guessedLetters.length; j++) {
+        if (wordLetters[i].toUpperCase() === guessedLetters[j].toUpperCase()) {
           m[i] = guessedLetters[j].toUpperCase();
         }
       }
     }
     return m;
   }),
-  showPictures: Ember.computed('totalGuesses', function(){
+  showPictures: Ember.computed('totalGuesses', function () {
     var guessTotal = this.get('totalGuessesLength');
     var correctTotal = this.get('countCorrectGuesses');
     var page = "http://lukmil.stud.if.ktu.lt/hangman/stage";
     var falseGuesses = guessTotal - correctTotal;
-    for (var i =0; i<7; i++ ){
-      if ( falseGuesses === i ){
-        return page + (i+1) +".png" ;
-      }}
+    for (var i = 0; i < 7; i++) {
+      if (falseGuesses === i) {
+        return page + (i + 1) + ".png";
+      }
+    }
   }),
 
   actions: {
-    addLetter: function(){
+    addLetter: function () {
       var letter = this.get('letter');
       this.get('guessedLetters').addObject(letter);
     },
-    newGame: function(){
+    newGame: function () {
       this.set('guessedLetters', []);
       this.set('word', "labas");
     },
-    selectDifficultyLevel: function(){
-      this.set('isShowingDifficultyLevel', true);
-    },
-    toggleDifficultyLevel(level){
-      this.set('isGameOn', true);
-      this.set('isShowingDifficultyLevel', false);
-      this.attrs.chosenLevel(level);
-     }
+
+
   }
 });

@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import {task} from 'ember-concurrency';
 const {RSVP} = Ember;
 
 export default Ember.Route.extend({
@@ -6,17 +7,18 @@ export default Ember.Route.extend({
 
   model() {
     const level = this.get('level');
+    let task = this.get('myTask');
+    task.perform(level);
     return RSVP.hash({
-      word: this.get('store').queryRecord('word', {level: level}).catch(function (error) {
-      })
+      word: task,
+      level: level
     });
   },
 
-  afterModel(model) {
-    if (!model.word) {
-      model.error = "Klaidutė";
-    }
-  },
+  myTask: task(function*(level) {
+    return this.get('store').queryRecord('word', {level: level});
+
+  }),//.restartable(),
 
   actions: {
     reloadLevel: function (level) {
@@ -24,8 +26,9 @@ export default Ember.Route.extend({
       this.refresh();
     },
     chosenLevel(level){
-      this.send("reloadLevel", level);
-      alert(level);
+      this.set('level', level);
+      this.refresh();
     }
   }
 });
+

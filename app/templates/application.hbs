@@ -23,13 +23,25 @@
   <div class="row">
     <div class="col-md-12">
       <section>
-        {{#if model.error}}
+        {{#if model.word.lastErrored.hasStarted}}
           <div data-test-id="error-notification" class="alert alert-danger">
-            {{model.error}}
-          </div>
+            {{model.word.lastErrored.error}}          </div>
         {{else}}
-          {{hangman-game chosenLevel=(route-action "chosenLevel")  word=model.word.title}}
-        {{/if}}
+          {{#if model.word.isRunning}}
+            Loading....
+            <div class="loader"></div>
+
+
+          {{else}}
+            Done!
+
+              {{hangman-level level=level chosenLevel=(route-action "chosenLevel")}}
+              {{hangman-game word=model.word.lastSuccessful.value.title}}
+            {{/if}}
+
+
+          {{/if}}
+
         {{outlet}}
       </section>
     </div>

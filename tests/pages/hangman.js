@@ -21,18 +21,10 @@ export default create({
   isGameOverNotification: text('[data-test-id="game-lost-notification"]'),
   isbuttonNewGameVisible : isVisible('[data-test-id="new-game-button"]'),
   buttonNewGame: clickable('[data-test-id="new-game-button"]'),
-  isDifficultyButtonVisible: text('[data-test-id="difficulty-button"]'),
-  buttonChooseDifficultyLevel: clickable('[data-test-id="difficulty-button"]'),
-  isButtonEasierWordsVisible: text('[data-test-id="easier-words"]'),
-  buttonEasierWords: clickable('[data-test-id="easier-words"]'),
-  buttonHarderWords: clickable('[data-test-id="harder-words"]'),
   makeGuess: function(letter) {
     this.fillLetterField(letter);
     this.submitGuess();
   },
-  startGame: function () {
-    this.buttonChooseDifficultyLevel();
-    this.buttonEasierWords();
-  }
+
 });
 
